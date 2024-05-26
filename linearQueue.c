@@ -9,13 +9,14 @@ void enqueue(int);
 void dequeue();
 void display();
 int is_full();
+void front();
 int is_empty();
 
 int main()
 {
     int choice, data;
     while(1){
-    printf("\nEnter \n1 for Enqueue \n2 for Dequeue \n3 for Display \n4 for Exit: ");
+    printf("\nEnter \n1 for Enqueue \n2 for Dequeue \n3 for Display \n4 for front \n5 for Exit: ");
     scanf("%d", &choice);
 
     switch(choice)
@@ -31,6 +32,7 @@ int main()
             else
             {
                 printf("\nQueue overflow...");
+                break;
             }
         case 2:
             dequeue();
@@ -39,6 +41,9 @@ int main()
             display();
             break;
         case 4:
+            front();
+            break;
+        case 5:
             exit(0);
         default:
             printf("\nInvalid Choice...");
@@ -47,7 +52,6 @@ int main()
     return 0;
 }
 
-//function definition
 void enqueue(int value)
 {
     if(is_full())
@@ -120,3 +124,20 @@ void display()
         }
     }
 }
+void front()
+{
+    int i;
+    if(is_empty())
+    {
+        printf("\nQueue is empty.");
+    }
+    else
+    {
+        printf("\nThe first elements in the queue is: ");
+
+            printf("%d\t", linear_queue[f]);
+
+    }
+}
+
+
