@@ -1,55 +1,104 @@
 #include <stdio.h>
+#include <conio.h>
 #include <stdlib.h>
 
+#define UP_ARROW 72
+#define DOWN_ARROW 80
+#define ENTER 13
 
 struct node {
     int info;
     struct node* next;
 };
 
-
 struct node* head = NULL;
 
-void enqueue(int);
+void enqueue(int value);
 void dequeue();
 void display();
 int is_full();
 void first();
 int is_empty();
 void empty();
+void displayMenu(int highlight, const char* menu[], int size);
+
+void displayMenu(int highlight, const char* menu[], int size) {
+    system("cls");
+    for (int i = 0; i < size; i++) {
+        if (i == highlight) {
+            printf("-> %s\n", menu[i]);
+        } else {
+            printf("   %s\n", menu[i]);
+        }
+    }
+}
 
 int main() {
-    int choice, data;
-    while (1) {
-        printf("\nEnter \n1 for Enqueue \n2 for Dequeue \n3 for Display \n4 for Front \n5 for Empty the QUEUE  \n6 for Exit: ");
-        scanf("%d", &choice);
+    const char* menuItems[] = {
+        "Enqueue",
+        "Dequeue",
+        "Display",
+        "Front",
+        "Empty the QUEUE",
+        "Exit"
+    };
+    int menuSize = sizeof(menuItems) / sizeof(menuItems[0]);
+    int highlight = 0;
+    int choice = 0;
+    int key;
 
-        switch (choice) {
-            case 1:
-                if (!is_full()) {
-                    printf("\nEnter data: ");
-                    scanf("%d", &data);
-                    enqueue(data);
-                } else {
-                    printf("\nQueue overflow...");
-                }
-                break;
-            case 2:
-                dequeue();
-                break;
-            case 3:
-                display();
-                break;
-            case 4:
-                first();
-                break;
-            case 5:
-                empty();
-                break;
-            case 6:
-                exit(0);
-            default:
-                printf("\nInvalid Choice...");
+    while (1) {
+        displayMenu(highlight, menuItems, menuSize);
+        key = getch(); // Get key input
+
+        if (key == 0 || key == 224) {
+            // Handle arrow keys
+            key = getch(); // Get the actual key
+            switch (key) {
+                case UP_ARROW:
+                    if (highlight > 0) {
+                        highlight--;
+                    }
+                    break;
+                case DOWN_ARROW:
+                    if (highlight < menuSize - 1) {
+                        highlight++;
+                    }
+                    break;
+            }
+        } else if (key == ENTER) {
+            choice = highlight;
+            switch (choice) {
+                case 0:
+                    if (!is_full()) {
+                        int data;
+                        printf("\nEnter data: ");
+                        scanf("%d", &data);
+                        enqueue(data);
+                    } else {
+                        printf("\nQueue overflow...");
+                    }
+                    break;
+                case 1:
+                    dequeue();
+                    break;
+                case 2:
+                    display();
+                    break;
+                case 3:
+                    first();
+                    break;
+                case 4:
+                    empty();
+                    break;
+                case 5:
+                    printf("Exiting...\n");
+                    return 0;
+                default:
+                    printf("\nInvalid Choice...");
+            }
+            printf("\nPress any key to return to the menu...");
+            getch(); // Wait for user to acknowledge
         }
     }
     return 0;
@@ -81,7 +130,6 @@ int is_empty() {
 }
 
 int is_full() {
-
     return 0;
 }
 
